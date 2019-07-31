@@ -8,9 +8,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
+using WebSocketSharp;
 
 namespace ServiceClientGameTest
 {
+    internal class MSG
+    {
+        public Accelerometer data { get; set; }
+        public string sender { get; set; }
+    }
+
     public partial class MainWindow : Window
     {
         private string _baseUrl;
@@ -20,6 +27,8 @@ namespace ServiceClientGameTest
         private DispatcherTimer _timer;
         private TimeSpan _duration = TimeSpan.FromSeconds(47);
         private DateTime _start;
+        private WebSocket _ws;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -27,11 +36,44 @@ namespace ServiceClientGameTest
             _timer = new DispatcherTimer();
             _timer.Tick += new EventHandler(timer_Tick);
             _timer.Interval = TimeSpan.FromMilliseconds(7);
-            Task.Run(() =>
-            {
-                while (true)
+            //Task.Run(() =>
+            //{
+            //    while (true)
+            //    {
+            //        GetDir(out var dir);
+            //        Dispatcher.Invoke(() =>
+            //        {
+            //            _left = (double)_fly.GetValue(Canvas.LeftProperty);
+            //            _top = (double)_fly.GetValue(Canvas.TopProperty);
+            //            Canvas.SetLeft(_fly, _left + dir.X);
+            //            Canvas.SetTop(_fly, _top + dir.Y);
+
+            //            _fly.RenderTransform = new ScaleTransform(dir.Scale, dir.Scale);
+            //            _effect.ShadowDepth = dir.Scale * 7;
+            //        });
+            //    }
+            //});
+
+            _ws = new WebSocket("ws://greatservice.azurewebsites.net/?name=Console&room=great");
+            _ws.OnMessage += (sender, e) =>
                 {
-                    GetDir(out var dir);
+                    Accelerometer acc;
+                    try
+                    {
+                        acc = JsonConvert.DeserializeObject<Accelerometer>(e.Data);
+                    }
+                    catch (Exception ex)
+                    {
+                        return;
+                    }
+
+                    Dir dir;
+                    dir.X = acc.x * -10;
+                    dir.Y = acc.y * 10;
+                    var coef = 0.981;
+                    var scaleDefault = 1;
+
+                    dir.Scale = ((acc.z - coef) + scaleDefault) * 1.6;
                     Dispatcher.Invoke(() =>
                     {
                         _left = (double)_fly.GetValue(Canvas.LeftProperty);
@@ -42,8 +84,10 @@ namespace ServiceClientGameTest
                         _fly.RenderTransform = new ScaleTransform(dir.Scale, dir.Scale);
                         _effect.ShadowDepth = dir.Scale * 7;
                     });
-                }
-            });
+                };
+
+            _ws.Connect();
+            _ws.Send("BALUS");
         }
 
         private void GetDir(out Dir dir)

@@ -8,15 +8,15 @@
         Title="MainWindow" Height="550
         " Width="800">
     <Window.Resources>
-        <DropShadowEffect x:Key="Shadow" Opacity="0.885" ShadowDepth="4" Direction="275" Color="#FF383838"/>
+        <DropShadowEffect x:Key="Shadow" Opacity="0.885" ShadowDepth="4" Direction="275" Color="#FF383838" />
     </Window.Resources>
     <Grid PreviewMouseLeftButtonDown="Canvas_PreviewMouseLeftButtonDown">
-        <Image  Source="Resources/map.jpg"/>
+        <Image  Source="Resources/map.jpg" />
         <TextBlock Name="TimeTextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" FontSize="100"
                    Text="New GAME?">
             <TextBlock.RenderTransform>
-                <ScaleTransform x:Name="MyAnimatedScaleTransform" 
-          ScaleX="1" ScaleY="1"  />
+                <ScaleTransform x:Name="MyAnimatedScaleTransform"
+          ScaleX="1" ScaleY="1" />
             </TextBlock.RenderTransform>
             <TextBlock.Triggers>
                 <EventTrigger RoutedEvent="TextBlock.Loaded">
@@ -26,14 +26,14 @@
                                 Storyboard.TargetName="MyAnimatedScaleTransform"
                                  Storyboard.TargetProperty="(ScaleTransform.ScaleX)"  RepeatBehavior="Forever">
                                 <DoubleAnimation.EasingFunction>
-                                    <ElasticEase  EasingMode="EaseOut"  />
+                                    <ElasticEase  EasingMode="EaseOut" />
                                 </DoubleAnimation.EasingFunction>
                             </DoubleAnimation>
-                            <DoubleAnimation  To="1.05" Duration="00:00:01" 
+                            <DoubleAnimation  To="1.05" Duration="00:00:01"
                                 Storyboard.TargetName="MyAnimatedScaleTransform"
                                  Storyboard.TargetProperty="(ScaleTransform.ScaleY)"  RepeatBehavior="Forever">
                                 <DoubleAnimation.EasingFunction>
-                                    <ElasticEase  EasingMode="EaseOut"  />
+                                    <ElasticEase  EasingMode="EaseOut" />
                                 </DoubleAnimation.EasingFunction>
                             </DoubleAnimation>
                         </Storyboard>
@@ -41,25 +41,24 @@
                 </EventTrigger>
             </TextBlock.Triggers>
         </TextBlock>
-        <Canvas >
-            <Image Canvas.Left="400" Canvas.Top="200" Name="_fly" Width="20" Source="Resources/point.png" Effect="{DynamicResource Shadow}" RenderTransformOrigin="0.5,0.5" >
+        <Canvas>
+            <Image Canvas.Left="400" Canvas.Top="200" Name="_fly" Width="20" Source="Resources/point.png" Effect="{DynamicResource Shadow}" RenderTransformOrigin="0.5,0.5">
                 <Image.RenderTransform>
                     <TransformGroup>
-                        <ScaleTransform ScaleX="2" ScaleY="2"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
+                        <ScaleTransform ScaleX="2" ScaleY="2" />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
                     </TransformGroup>
                 </Image.RenderTransform>
             </Image>
         </Canvas>
         <Border VerticalAlignment="Bottom" Width="500" BorderThickness="2" CornerRadius="4" BorderBrush="DarkGray">
-            
-        <DockPanel >
-            <TextBlock Text="server" Margin="4"/>
-            <TextBox Margin="2" VerticalContentAlignment="Center" Name="_url">http://localhost:3000/1</TextBox>
-        </DockPanel>
+
+            <DockPanel>
+                <TextBlock Text="server" Margin="4" />
+                <TextBox Margin="2" VerticalContentAlignment="Center" Name="_url">azure</TextBox>
+            </DockPanel>
         </Border>
     </Grid>
-
 </Window>
